@@ -1,0 +1,156 @@
+/*This source code copyrighted by Lazy Foo' Productions (2004-2015)
+ , edited by Zhuoxin Sun and may not be redistributed without
+ written permission.*/
+
+//Using SDL, SDL_image, SDL_ttf, SDL_mixer, standard IO, math, and strings
+#include <SDL2/SDL.h>
+#include <SDL2_mixer/SDL_mixer.h>
+#include <stdio.h>
+#include <iostream>
+using namespace std;
+
+//width and height of the winder that's rendering to
+const int WIDTH = 650, HEIGHT = 500;
+
+//devide the codes into 3 modulars (so not all the codes are in the main):
+//1. starts up SDL and creates window
+bool init();
+//2. loads media
+bool loadMedia();
+//3. frees media and shuts down SDL
+void close();
+
+
+//declare the window we'll be rendering to
+SDL_Window* gWindow = NULL;
+//(SDL surfaces) is an image data type
+//declare the screen image(a 2D image inside of the window)
+SDL_Surface* gScreenSurface = NULL;
+//the image we will load from a file and show on the screen
+SDL_Surface* gHelloWorld = NULL;
+
+bool init()
+{
+    //initialization flag
+    bool success = true;
+    
+    //initializa SDL(can't call any SDL functions without initializing)
+    //When have an error, will return -1, if so, print
+    //to the console what happened
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        //printf stands for "print format", but I'll use cout instead
+        //SDL_GetError returns the latest error(a string) pronduced by an SDL function
+        cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
+        success = false;
+    }
+    //if SDL initialized successfully, we create a window using SDL_CreatWindow
+    else
+    {
+        //create window, the last argument is the creation flag that make sure the window is show when it's created
+        gWindow = SDL_CreateWindow("SDL_Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+        
+        //if there is an error, SDL_CreateWindow returns NULL, use "if" to print the error
+        if (gWindow == NULL)
+        {
+            cout << "Window could not be created! SDL_Error: " << SDL_GetError() << endl;
+            success = false;
+        }
+        //if the window was created successfully, get the window's surface so we can draw to it
+        else
+        {
+            //get window surface
+            //we want to show images inside of the window and in order to do that
+            //we need to get the image inside of the window
+            gScreenSurface = SDL_GetWindowSurface(gWindow);
+            
+            /*MOVE THIS PART TO THE main FUNCTION
+             //fill the surface white(NOT THE IMPORTNAT POINT)
+             SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0xFF, 0xFF, 0xFF));
+             //update the window surface so it shows everything I drew
+             SDL_UpdateWindowSurface(gWindow);
+             //to keep the window from flashing for a second and disappearing
+             //we use SDL_Delay to make the window wait for a given amount of
+             //0.001 second before it disappear
+             SDL_Delay(2000);
+             */
+        }
+    }
+    
+    return success;
+}
+
+//in loadMedia function, we load our image using SDL_LoadBMP
+//SDL_LoadBMP takes in the path of a bmp file and returns the loaded surface
+bool loadMedia()
+{
+    //loading success flag
+    bool success = true;
+    
+    //load splash image
+    gHelloWorld = SDL_LoadBMP("hello_world.bmp");
+    if (gHelloWorld == NULL)
+    {
+        cout << "Unable to load image! SDL Error: " << "hello_world.bmp"
+        << SDL_GetError() << endl;
+        success = false;
+    }
+    
+    return success;
+}
+
+void close()
+{
+    //deallocate surface
+    //the screen surface will be taken care of
+    //by SDL_DestroyWindow
+    SDL_FreeSurface(gHelloWorld);
+    //have my pointers point to NULL when they're not pointing to anything
+    gHelloWorld = NULL;
+    
+    //destroy window
+    SDL_DestroyWindow(gWindow);
+    gWindow = NULL;
+    
+    //quit SDL subsystems
+    SDL_Quit();
+}
+
+//in main we initialize SDL and load the image
+int main (int argc, char* args[])
+{
+    //start up SDL and create window
+    if (!init())
+    {
+        cout << "Failed to initialize!\n";
+    }
+    else
+    {
+        //load media
+        if (!loadMedia())
+        {
+            cout << "Failed to load media\n";
+        }
+        else
+        {
+            //blit the loaded surface onto the screen surface by using SDL_BlitSurface
+            //SDL_BlitSurface takes a source surface and stamps a copy of it
+            //onto the destination surface, 1st argument is the source image
+            //and 3rd argument if the destination
+            SDL_BlitSurface(gHelloWorld, NULL, gScreenSurface, NULL);
+            
+            //update the surface so it shows the thing I drew
+            //don't call this update function only after all the blits for the current frame
+            //are done: draw everything to the back buffer first and once we're done we swap the back
+            //and front buffer so now the user can see the finished frame
+            SDL_UpdateWindowSurface(gWindow);
+            
+            //make the window wait for sometime before it disappears
+            SDL_Delay(20000);
+        }
+    }
+    //free resources and cose SDL
+    close();
+    
+    return 0;
+}
