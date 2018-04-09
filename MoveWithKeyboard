@@ -1,0 +1,53 @@
+//Author: Zhuoxin Sun
+//Date Created: 04/08/2018
+
+#include <SDL2/SDL.h>
+#include <SDL2_mixer/SDL_mixer.h>
+#include "SDL_Plotter.h"
+#include <iostream>
+
+using namespace std;
+//width and height of the winder that's rendering to
+const int WIDTH = 640, HEIGHT = 480;
+
+int main (int argc, char ** argv)
+{
+    //set the start point of the pixel
+    int col = 10;
+    int row = 10;
+    
+    //create a SDL_Plotter class; the pixel is the whole window
+    SDL_Plotter pixel(WIDTH,HEIGHT);
+    
+    
+    while (!pixel.getQuit())
+    {
+        //draw a pixel
+        pixel.plotPixel(col, row, 50, 50, 50);
+        pixel.plotPixel(col + 1, row, 50, 50, 50);
+        pixel.plotPixel(col, row + 1, 50, 50, 50);
+        pixel.plotPixel(col + 1, row + 1, 50, 50, 50);
+        
+        if (pixel.kbhit())
+        {
+            switch (pixel.getKey()) {
+                case UP_ARROW:
+                    row--;
+                    break;
+                case DOWN_ARROW:
+                    row++;
+                    break;
+                case LEFT_ARROW:
+                    col--;
+                    break;
+                case RIGHT_ARROW:
+                    col++;
+                    break;
+            }
+        }
+        pixel.update();
+        pixel.clear();
+    }
+
+    return 0;
+}
