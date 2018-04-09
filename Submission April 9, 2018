@@ -1,3 +1,4 @@
+#include <iostream>
 #include <SDL2/SDL.h>
 #include "SDL_Plotter.h"
 #include "playerShip.h"
@@ -12,7 +13,7 @@ int main ( int argc, char *argv[])
     //set the start point of the pixel
     int col = 250;
     int row = 450;
-    int enemyShipNum = rand();
+    //int enemyShipNum = rand();
 
     //SDL_Plotter enemyShip;
     //create a SDL_Plotter class; the pixel is the whole window
@@ -52,3 +53,4 @@ int main ( int argc, char *argv[])
 
     return 0;
 }
+
