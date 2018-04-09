@@ -1,0 +1,54 @@
+#include <SDL2/SDL.h>
+#include "SDL_Plotter.h"
+#include "playerShip.h"
+#include <random>
+
+using namespace std;
+
+const int WIDTH = 500, HEIGHT = 500;
+
+int main ( int argc, char *argv[])
+{
+    //set the start point of the pixel
+    int col = 250;
+    int row = 450;
+    int enemyShipNum = rand();
+
+    //SDL_Plotter enemyShip;
+    //create a SDL_Plotter class; the pixel is the whole window
+   // SDL_Plotter pixel(WIDTH,HEIGHT);
+    //SDL_Renderer* renderer;
+    SDL_Plotter ship1(WIDTH, HEIGHT);
+
+
+    while (!ship1.getQuit())
+    {
+        //draw a pixel
+        ship1.plotPixel(col, row, 100, 100, 100);
+        ship1.plotPixel(col + 1, row, 100, 100, 100);
+        ship1.plotPixel(col, row + 1, 100, 100, 100);
+        ship1.plotPixel(col + 1, row + 1, 100, 100, 100);
+
+        if (ship1.kbhit())
+        {
+            switch (ship1.getKey()) {
+                case UP_ARROW:
+                    row--;
+                    break;
+                case DOWN_ARROW:
+                    row++;
+                    break;
+                case LEFT_ARROW:
+                    col--;
+                    break;
+                case RIGHT_ARROW:
+                    col++;
+                    break;
+            }
+        }
+        ship1.update();
+        ship1.clear();
+    }
+
+    return 0;
+}
