@@ -2,7 +2,6 @@
 #include <SDL2/SDL.h>
 #include "SDL_Plotter.h"
 #include "playerShip.h"
-#include <random>
 
 using namespace std;
 
