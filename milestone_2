@@ -27,6 +27,9 @@ int main ( int argc, char *argv[])
         ship1.plotPixel(col, row + 1, 100, 100, 100);
         ship1.plotPixel(col + 1, row + 1, 100, 100, 100);
         bullet.plotPixel(ship1.getCol(), ship1.getRow(), 100, 100, 100);
+        bullet.plotPixel(ship1.getCol() + 1, ship1.getRow(), 100, 100, 100);
+        bullet.plotPixel(ship1.getCol(), ship1.getRow() + 1, 100, 100, 100);
+        bullet.plotPixel(ship1.getCol() + 1, ship1.getRow() + 1, 100, 100, 100);
 
         if (ship1.kbhit())
         {
@@ -62,3 +65,4 @@ int main ( int argc, char *argv[])
 
  return 0;
 }
+
