@@ -34,14 +34,14 @@ int main(int argc, char *argv[])
             else if(ev.type == SDL_MOUSEBUTTONDOWN)
             {
                 if(ev.button.clicks == SDL_BUTTON_LEFT)
-                {
                     currentImage = image3; //change to start game
-                }
                 else if(ev.button.clicks == SDL_BUTTON_RIGHT)
                 {
                     currentImage = image2;
+                    {
                         if(ev.button.clicks == 2) //go back to title screen
                         currentImage = image1;
+                    }
                 }
             }
         }
