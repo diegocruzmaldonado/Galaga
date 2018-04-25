@@ -33,15 +33,15 @@ int main(int argc, char *argv[])
                 isRunning = false;
             else if(ev.type == SDL_MOUSEBUTTONDOWN)
             {
-                if(ev.button.clicks == SDL_BUTTON_LEFT)
+                if(ev.button.button == SDL_BUTTON_LEFT)
+                {
                     currentImage = image3; //change to start game
-                else if(ev.button.clicks == SDL_BUTTON_RIGHT)
+                }
+                if(ev.button.button == SDL_BUTTON_RIGHT)
                 {
                     currentImage = image2;
-                    {
-                        if(ev.button.clicks == 2) //go back to title screen
+                    if(ev.button.clicks == 1) //go back to title screen; right click
                         currentImage = image1;
-                    }
                 }
             }
         }
