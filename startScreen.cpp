@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
     window = SDL_CreateWindow("Galaga", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
     windowSurface = SDL_GetWindowSurface(window);
     
-    image1 = SDL_LoadBMP("background.bmp");
-    image2 = SDL_LoadBMP("start.bmp");
-    image3 = SDL_LoadBMP("credits.bmp");
+    image1 = SDL_LoadBMP("background.bmp"); //title screen
+    image2 = SDL_LoadBMP("credits.bmp"); //screen with names
+    image3 = SDL_LoadBMP("start.bmp");
     
     currentImage = image1;
     
@@ -31,18 +31,18 @@ int main(int argc, char *argv[])
             // Getting the quit and the keyboard events
             if(ev.type == SDL_QUIT)
                 isRunning = false;
-            else if(ev.type == SDL_MOUSEBUTTONUP) //SDL_MOUSEMOTION
+            else if(ev.type == SDL_MOUSEBUTTONDOWN)
             {
-                if(ev.button.clicks == 1) //.x or .y < a number
+                if(ev.button.clicks == SDL_BUTTON_LEFT)
+                {
+                    currentImage = image3; //change to start game
+                }
+                else if(ev.button.clicks == SDL_BUTTON_RIGHT)
                 {
                     currentImage = image2;
+                        if(ev.button.clicks == 2) //go back to title screen
+                        currentImage = image1;
                 }
-                else if(ev.button.clicks == 2) //.x or .y < a number
-                {
-                    currentImage = image3;
-                }
-                else
-                    currentImage = image1;
             }
         }
         
